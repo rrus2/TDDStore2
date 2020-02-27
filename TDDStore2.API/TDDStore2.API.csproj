@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TDDStore2.DataAccess\TDDStore2.DataAccess.csproj" />
-    <ProjectReference Include="..\TDDStore2\TDDStore2.csproj" />
   </ItemGroup>
 
 
