@@ -22,7 +22,7 @@ namespace TDDStore2.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.Users.Include(x => x.Orders).ToListAsync();
             return users;
         }
         // GET/id

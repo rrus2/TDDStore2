@@ -24,7 +24,7 @@ namespace TDDStore2.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders.Include(x => x.ApplicationUser).Include(x => x.Product).ToListAsync();
         }
 
         // GET: api/Orders/5
