@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TDDStore2.Tests
 {
-    public class OrderTests
+    public class OrderTestsTheories
     {
     }
 }
