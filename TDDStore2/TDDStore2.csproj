@@ -13,6 +13,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TDDStore2.DataAccess\TDDStore2.DataAccess.csproj" />
+  </ItemGroup>
+
 
 
 </Project>
