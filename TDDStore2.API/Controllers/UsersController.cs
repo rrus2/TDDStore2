@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TDDStore2.DataAccess.Models;
+using TDDStore2.DataAccess.VIewModels;
 
 namespace TDDStore2.API.Controllers
 {
@@ -14,9 +16,11 @@ namespace TDDStore2.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public UsersController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public UsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         // GET
         [HttpGet]
@@ -36,13 +40,18 @@ namespace TDDStore2.API.Controllers
         }
         //PUT/id
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(string id, ApplicationUser user)
+        public async Task<IActionResult> UpdateUser(string id, UserViewModel model)
         {
+            var user = await _userManager.FindByNameAsync(model.Email);
             if (id != user.Id)
                 return BadRequest();
             if (user == null)
                 return NotFound();
-            _context.Entry(user).State = EntityState.Modified;
+            //_context.Entry(user).State = EntityState.Modified;
+            user.Email = model.Email;
+            user.Birthdate = model.Birthdate;
+            user.UserName = model.Email;
+            user.PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(user, model.RepeatPassword);
             try
             {
                 await _context.SaveChangesAsync();
@@ -58,9 +67,11 @@ namespace TDDStore2.API.Controllers
         }
         // POST/user
         [HttpPost]
-        public async Task<ActionResult<ApplicationUser>> CreateUser(ApplicationUser user)
+        public async Task<ActionResult<ApplicationUser>> CreateUser(UserViewModel model)
         {
-            await _context.Users.AddAsync(user);
+            //await _context.Users.AddAsync(user);
+            var user = new ApplicationUser { Email = model.Email, Birthdate = model.Birthdate, UserName = model.Email };
+            await _userManager.CreateAsync(user, model.RepeatPassword);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
@@ -68,10 +79,13 @@ namespace TDDStore2.API.Controllers
         [HttpDelete]
         public async Task<ActionResult<ApplicationUser>> DeleteUser(string id)
         {
-            var user = await _context.Users.FindAsync(id);
+            //var user = await _context.Users.FindAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
+            
             if (user == null)
                 return NotFound();
-            _context.Users.Remove(user);
+            //_context.Users.Remove(user);
+            await _userManager.DeleteAsync(user);
             await _context.SaveChangesAsync();
             return user;
         }

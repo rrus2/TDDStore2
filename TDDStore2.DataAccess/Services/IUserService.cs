@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using TDDStore2.DataAccess.Models;
+using TDDStore2.DataAccess.VIewModels;
 
 namespace TDDStore2.DataAccess.Services
 {
@@ -10,8 +11,8 @@ namespace TDDStore2.DataAccess.Services
     {
         Task<IEnumerable<ApplicationUser>> GetUsers();
         Task<ApplicationUser> GetUser(string id);
-        Task<ApplicationUser> CreateUser(ApplicationUser user);
-        Task<ApplicationUser> UpdateUser(string id, ApplicationUser user);
+        Task<ApplicationUser> CreateUser(UserViewModel model);
+        Task<ApplicationUser> UpdateUser(string id, UserViewModel model);
         void DeleteUser(string id);
     }
 }
