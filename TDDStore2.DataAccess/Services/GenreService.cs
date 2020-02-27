@@ -10,19 +10,43 @@ namespace TDDStore2.DataAccess.Services
 {
     public class GenreService : IGenreService
     {
-        public Task<Genre> CreateGenre(Genre genre)
+        public async Task<Genre> CreateGenre(Genre genre)
         {
-            throw new NotImplementedException();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:62710/api/genres");
+                var str = JsonConvert.SerializeObject(genre);
+                var strContent = new StringContent(str, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(client.BaseAddress, strContent);
+                if (!response.IsSuccessStatusCode)
+                    throw new Exception("Error creating genre");
+                return genre;
+            }
         }
 
-        public void DeleteGenre(int id)
+        public async void DeleteGenre(int id)
         {
-            throw new NotImplementedException();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:62710/api/genres/" + id);
+                var response = await client.DeleteAsync(client.BaseAddress);
+                if (!response.IsSuccessStatusCode)
+                    throw new Exception("Error deleting genre");
+            }
         }
 
-        public Task<Genre> GetGenre(int id)
+        public async Task<Genre> GetGenre(int id)
         {
-            throw new NotImplementedException();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:62710/api/genres/" + id);
+                var response = await client.GetAsync(client.BaseAddress);
+                if (!response.IsSuccessStatusCode)
+                    throw new Exception("Error fetching genre with id: " + id);
+                var str = await response.Content.ReadAsStringAsync();
+                var genre = JsonConvert.DeserializeObject<Genre>(str);
+                return genre;
+            }
         }
 
         public async Task<IEnumerable<Genre>> GetGenres()
@@ -39,9 +63,18 @@ namespace TDDStore2.DataAccess.Services
             }
         }
 
-        public Task<Genre> UpdateGenre(int id, Genre genre)
+        public async Task<Genre> UpdateGenre(int id, Genre genre)
         {
-            throw new NotImplementedException();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:62710/api/genres/" + id);
+                var str = JsonConvert.SerializeObject(genre);
+                var strContent = new StringContent(str, Encoding.UTF8, "application/json");
+                var response = await client.PutAsync(client.BaseAddress, strContent);
+                if (!response.IsSuccessStatusCode)
+                    throw new Exception("Error updating genre with id: " + id);
+                return genre;
+            }
         }
     }
 }

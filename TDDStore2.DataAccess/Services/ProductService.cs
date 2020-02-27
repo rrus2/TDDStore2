@@ -28,7 +28,7 @@ namespace TDDStore2.DataAccess.Services
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:62710/api/products" + id);
+                client.BaseAddress = new Uri("http://localhost:62710/api/products/" + id);
                 var response = await client.DeleteAsync(client.BaseAddress);
                 if (!response.IsSuccessStatusCode)
                     throw new Exception("Error deleting product");
