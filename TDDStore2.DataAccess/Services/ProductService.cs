@@ -5,13 +5,15 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TDDStore2.DataAccess.Models;
+using TDDStore2.DataAccess.VIewModels;
 
 namespace TDDStore2.DataAccess.Services
 {
     public class ProductService : IProductService
     {
-        public async Task<Product> CreateProduct(Product product)
+        public async Task<Product> CreateProduct(ProductViewModel model)
         {
+            var product = new Product { Name = model.Name, Price = model.Price, Stock = model.Stock, GenreID = model.GenreID };
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("http://localhost:62710/api/products");
@@ -63,8 +65,9 @@ namespace TDDStore2.DataAccess.Services
             }
         }
 
-        public async Task<Product> UpdateProduct(int id, Product product)
+        public async Task<Product> UpdateProduct(int id, ProductViewModel model)
         {
+            var product = new Product { Name = model.Name, Price = model.Price, Stock = model.Stock, GenreID = model.GenreID };
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("http://localhost:62710/api/products/" + id);
