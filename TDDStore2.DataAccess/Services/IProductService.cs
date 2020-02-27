@@ -8,10 +8,10 @@ namespace TDDStore2.DataAccess.Services
 {
     public interface IProductService
     {
-        Task<List<Product>> GetProducts();
+        Task<IEnumerable<Product>> GetProducts();
         Task<Product> GetProduct(int id);
         Task<Product> CreateProduct(Product product);
         Task<Product> UpdateProduct(int id, Product product);
-        Task<Product> DeleteProduct(int id);
+        void DeleteProduct(int id);
     }
 }
