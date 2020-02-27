@@ -47,11 +47,11 @@ namespace TDDStore2.API.Controllers
                 return BadRequest();
             if (user == null)
                 return NotFound();
-            //_context.Entry(user).State = EntityState.Modified;
             user.Email = model.Email;
             user.Birthdate = model.Birthdate;
             user.UserName = model.Email;
             user.PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(user, model.RepeatPassword);
+            _context.Entry(user).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
