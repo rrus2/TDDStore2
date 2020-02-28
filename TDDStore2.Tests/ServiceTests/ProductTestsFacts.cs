@@ -51,7 +51,7 @@ namespace TDDStore2.Tests.ServiceTests
 
 
 
-        public void Dispose()
+        private void Dispose()
         {
             _context.Database.EnsureDeleted();
 
