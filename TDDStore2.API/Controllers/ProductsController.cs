@@ -24,7 +24,7 @@ namespace TDDStore2.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await _context.Products.Include(x => x.Genre).ToListAsync();
+            return Ok(await _context.Products.Include(x => x.Genre).ToListAsync());
         }
 
         // GET: api/Products/5
@@ -38,7 +38,7 @@ namespace TDDStore2.API.Controllers
                 return NotFound();
             }
 
-            return product;
+            return Ok(product);
         }
 
         // PUT: api/Products/5
@@ -98,7 +98,7 @@ namespace TDDStore2.API.Controllers
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
 
-            return product;
+            return Ok(product);
         }
 
         private bool ProductExists(int id)

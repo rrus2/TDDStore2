@@ -24,7 +24,7 @@ namespace TDDStore2.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return await _context.Orders.Include(x => x.ApplicationUser).Include(x => x.Product).ToListAsync();
+            return Ok(await _context.Orders.Include(x => x.ApplicationUser).Include(x => x.Product).ToListAsync());
         }
 
         // GET: api/Orders/5
@@ -38,7 +38,7 @@ namespace TDDStore2.API.Controllers
                 return NotFound();
             }
 
-            return order;
+            return Ok(order);
         }
 
         // PUT: api/Orders/5
@@ -98,7 +98,7 @@ namespace TDDStore2.API.Controllers
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
 
-            return order;
+            return Ok(order);
         }
 
         private bool OrderExists(int id)

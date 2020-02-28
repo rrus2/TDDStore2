@@ -24,7 +24,7 @@ namespace TDDStore2.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Genre>>> GetGenres()
         {
-            return await _context.Genres.ToListAsync();
+            return Ok(await _context.Genres.ToListAsync());
         }
 
         // GET: api/Genres/5
@@ -38,7 +38,7 @@ namespace TDDStore2.API.Controllers
                 return NotFound();
             }
 
-            return genre;
+            return Ok(genre);
         }
 
         // PUT: api/Genres/5
@@ -98,7 +98,7 @@ namespace TDDStore2.API.Controllers
             _context.Genres.Remove(genre);
             await _context.SaveChangesAsync();
 
-            return genre;
+            return Ok(genre);
         }
 
         private bool GenreExists(int id)

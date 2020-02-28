@@ -27,7 +27,7 @@ namespace TDDStore2.API.Controllers
         public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers()
         {
             var users = await _context.Users.Include(x => x.Orders).ToListAsync();
-            return users;
+            return Ok(users);
         }
         // GET/id
         [HttpGet("{id}")]
@@ -87,7 +87,7 @@ namespace TDDStore2.API.Controllers
             //_context.Users.Remove(user);
             await _userManager.DeleteAsync(user);
             await _context.SaveChangesAsync();
-            return user;
+            return Ok(user);
         }
         private bool UserExists(string id)
         {
